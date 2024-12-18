@@ -23,11 +23,8 @@ public class Platform {
 
     // Metodă pentru a verifica dacă jucătorul este deasupra platformei
     public boolean isOnTop(float playerX, float playerY, float playerWidth, float playerHeight, float playerVelocityY) {
-        // Verificăm dacă jucătorul cade (velocitate pozitivă înseamnă că se mișcă în jos)
         boolean isFalling = playerVelocityY > 0;
-        // Verificăm dacă picioarele jucătorului sunt aproape de marginea de sus a platformei
         boolean feetNearTop = Math.abs((playerY + playerHeight) - y) < 10;
-        // Verificăm dacă jucătorul este în intervalul x al platformei
         boolean withinXBounds = playerX + playerWidth > x && playerX < x + width;
 
         return isFalling && feetNearTop && withinXBounds;
@@ -50,7 +47,7 @@ public class Platform {
     public boolean isCollidingUnder(float playerX, float playerY, float playerWidth, float playerVelocityY) {
         boolean isJumping = playerVelocityY < 0;
         boolean withinXBounds = playerX + playerWidth > x && playerX < x + width;
-        boolean headNearTop = Math.abs(playerY - (y + height)) < 2;
+        boolean headNearTop = Math.abs(playerY - (y + height)) < 1;
         return withinXBounds && headNearTop && isJumping;
     }
 

@@ -35,10 +35,10 @@ public class Level {
         platforms.add(new Platform(400, 400, 200, 20));
 
         // Cheie
-        keys.add(new Key(500, 250));
+        keys.add(new Key(500, 300));
 
         // Ușă
-        door = new Door(700, 490);
+        door = new Door(700, 520);
 
         // Poziția de start a jucătorului
         playerStartX = 50;
@@ -47,16 +47,16 @@ public class Level {
 
     private void createLevel2() {
         // Platforme nivel 2
-        platforms.add(new Platform(0, 550, 800, 20));
-        platforms.add(new Platform(200, 450, 100, 20));
-        platforms.add(new Platform(400, 350, 100, 20));
-        platforms.add(new Platform(600, 250, 100, 20));
+        platforms.add(new Platform(0, 580, 800, 20));
+        platforms.add(new Platform(200, 500, 100, 20));
+        platforms.add(new Platform(400, 400, 100, 20));
+        platforms.add(new Platform(600, 300, 100, 20));
 
         // Cheie
-        keys.add(new Key(650, 200));
+        keys.add(new Key(650, 250));
 
         // Ușă
-        door = new Door(700, 490);
+        door = new Door(700, 520);
 
         // Poziția de start a jucătorului
         playerStartX = 50;
