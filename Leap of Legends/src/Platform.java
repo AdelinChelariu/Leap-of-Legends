@@ -1,19 +1,18 @@
 import java.awt.*;
 
 public class Platform {
-    private int x, y;           // Poziția platformei
-    private int width, height;  // Dimensiunile platformei
-    private Color color;        // Culoarea platformei
+    private int x, y;
+    private int width, height;
+    private Color color;
 
     public Platform(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.color = Color.GREEN; // Culoare implicită
+        this.color = Color.GREEN;
     }
 
-    // Metodă pentru detectarea coliziunilor
     public boolean intersects(float playerX, float playerY, float playerWidth, float playerHeight) {
         return playerX < x + width &&
                 playerX + playerWidth > x &&
@@ -21,7 +20,6 @@ public class Platform {
                 playerY + playerHeight > y;
     }
 
-    // Metodă pentru a verifica dacă jucătorul este deasupra platformei
     public boolean isOnTop(float playerX, float playerY, float playerWidth, float playerHeight, float playerVelocityY) {
         boolean isFalling = playerVelocityY > 0;
         boolean feetNearTop = Math.abs((playerY + playerHeight) - y) < 10;
@@ -30,24 +28,22 @@ public class Platform {
         return isFalling && feetNearTop && withinXBounds;
     }
 
-    // Verifică coliziunea cu partea stângă a platformei
     public boolean isCollidingLeft(float playerX, float playerY, float playerWidth, float playerHeight) {
         boolean withinYBounds = playerY + playerHeight > y && playerY < y + height;
-        boolean touchingLeft = Math.abs((playerX + playerWidth) - x) < 5;
+        boolean touchingLeft = Math.abs((playerX + playerWidth) - x) < 2;
         return withinYBounds && touchingLeft;
     }
 
-    // Verifică coliziunea cu partea dreaptă a platformei
     public boolean isCollidingRight(float playerX, float playerY, float playerWidth, float playerHeight) {
         boolean withinYBounds = playerY + playerHeight > y && playerY < y + height;
-        boolean touchingRight = Math.abs(playerX - (x + width)) < 5;
+        boolean touchingRight = Math.abs(playerX - (x + width)) < 2;
         return withinYBounds && touchingRight;
     }
 
     public boolean isCollidingUnder(float playerX, float playerY, float playerWidth, float playerVelocityY) {
         boolean isJumping = playerVelocityY < 0;
         boolean withinXBounds = playerX + playerWidth > x && playerX < x + width;
-        boolean headNearTop = Math.abs(playerY - (y + height)) < 1;
+        boolean headNearTop = Math.abs(playerY - (y + height)) < 5;
         return withinXBounds && headNearTop && isJumping;
     }
 

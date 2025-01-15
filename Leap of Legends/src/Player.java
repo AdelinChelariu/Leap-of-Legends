@@ -10,8 +10,9 @@ public class Player {
     private final float HEIGHT = 50;
     private boolean canJump = true;
     private boolean isFalling = false;
+    private boolean isDead = false;
 
-    // Constantele pentru mișcare
+    // Constante pentru mișcare
     private static final float MOVE_SPEED = 5.0f;
     private static final float JUMP_FORCE = -15.0f;
     private static final float GRAVITY = 0.95f;
@@ -38,7 +39,6 @@ public class Player {
     public float getWidth() { return WIDTH; }
     public float getHeight() { return HEIGHT; }
 
-    // Metodele de mișcare
     public void moveLeft() {
         velocityX = -MOVE_SPEED;
     }
@@ -73,10 +73,17 @@ public class Player {
         this.isJumping = false;
     }
 
+    public boolean isDead() {
+        return isDead;
+    }
+
     // Metoda de actualizare a poziției
     public void update(List<Platform> platforms) {
-        // Aplicăm gravitația
         velocityY += GRAVITY;
+
+        if (y > GameEngine.getInstance().getHEIGHT()) {
+            isDead = true;
+        }
 
         if (isHitEffect) {
             hitEffectDuration--;
@@ -86,37 +93,30 @@ public class Player {
             }
         }
 
-        // Calculăm următoarea poziție pe X înainte de a o aplica
         float nextX = x + velocityX;
 
-        // Verificăm coliziunile laterale
         boolean canMoveHorizontally = true;
 
         for (Platform platform : GameEngine.getInstance().getPlatforms()) {
-            // Verificăm coliziunea în funcție de direcția de mișcare
-            if (velocityX > 0) {  // Ne mișcăm spre dreapta
+            if (velocityX > 0) {
                 if (platform.isCollidingLeft(nextX, y, WIDTH, HEIGHT)) {
                     canMoveHorizontally = false;
-                    x = platform.getX() - WIDTH - 1;  // Plasăm jucătorul lângă platformă
+                    x = platform.getX() - WIDTH - 1;
                     break;
                 }
-            } else if (velocityX < 0) {  // Ne mișcăm spre stânga
+            } else if (velocityX < 0) {
                 if (platform.isCollidingRight(nextX, y, WIDTH, HEIGHT)) {
                     canMoveHorizontally = false;
-                    x = platform.getX() + platform.getWidth() + 1;  // Plasăm jucătorul lângă platformă
+                    x = platform.getX() + platform.getWidth() + 1;
                     break;
                 }
             }
         }
 
-        // Aplicăm mișcarea pe X doar dacă nu există coliziuni
         if (canMoveHorizontally) {
             x = nextX;
-        } else {
-            velocityX = 0;  // Oprim mișcarea când lovim o platformă
         }
 
-        // Gestionăm mișcarea pe axa Y
         float nextY = y + velocityY;
         boolean onPlatform = false;
 
@@ -124,11 +124,9 @@ public class Player {
             isFalling = true;
         }
 
-        // Verificăm coliziunile cu toate platformele
         for (Platform platform : platforms) {
-            // Verificăm dacă jucătorul va ateriza pe platformă
             if (platform.isOnTop(nextX, nextY, WIDTH, HEIGHT, velocityY)) {
-                y = platform.getY() - HEIGHT - 1; // Așezăm jucătorul pe platformă
+                y = platform.getY() - HEIGHT - 1;
                 velocityY = 0;
                 isJumping = false;
                 onPlatform = true;
@@ -139,22 +137,26 @@ public class Player {
 
             if(platform.isCollidingUnder(nextX, nextY, WIDTH, velocityY)) {
                 y = platform.getY() + platform.getHeight() + 1;
-                // Activăm efectul de lovitură
                 triggerHitEffect();
-                // Adăugăm un mic "bounce" pentru feedback vizual
-                velocityY = 2.0f; // Un mic impuls în jos
-                //velocityY = 0;
                 break;
             }
         }
 
-        // Dacă nu suntem pe nicio platformă, aplicăm mișcarea pe axa Y
         if (!onPlatform) {
             y = nextY;
         }
 
-        // Limităm mișcarea la marginile ecranului (opțional)
         x = Math.max(0, Math.min(x, GameEngine.getInstance().getWIDTH() - WIDTH));
+    }
+
+    public void reset(float startX, float startY) {
+        x = startX;
+        y = startY;
+        velocityX = 0;
+        velocityY = 0;
+        isDead = false;
+        isJumping = false;
+        canJump = true;
     }
 
     // Metode pentru randare și acces

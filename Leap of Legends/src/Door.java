@@ -31,4 +31,8 @@ public class Door {
         }
         g.fillRect((int)x, (int)y, WIDTH, HEIGHT);
     }
+
+    public void reset() {
+        isLocked = true;
+    }
 }

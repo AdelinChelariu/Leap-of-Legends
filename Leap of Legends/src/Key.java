@@ -36,4 +36,8 @@ public class Key {
     public boolean isCollected() {
         return isCollected;
     }
+
+    public void reset() {
+        isCollected = false;
+    }
 }
