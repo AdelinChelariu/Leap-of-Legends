@@ -136,7 +136,8 @@ public class Player {
             }
 
             if(platform.isCollidingUnder(nextX, nextY, WIDTH, velocityY)) {
-                y = platform.getY() + platform.getHeight() + 1;
+                y = platform.getY() + platform.getHeight() + 2;
+                velocityY = 0;
                 triggerHitEffect();
                 break;
             }
